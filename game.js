@@ -1306,9 +1306,23 @@
     return document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
   }
 
+  function isIOSDevice() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  }
+
+  function isStandaloneApp() {
+    return window.navigator.standalone || (typeof matchMedia === "function" && matchMedia("(display-mode: standalone)").matches);
+  }
+
+  function setImmersiveMode(active) {
+    document.body.classList.toggle("immersive-mode", active);
+    updateFullscreenLabel();
+    setTimeout(resize, 80);
+  }
+
   function updateFullscreenLabel() {
     if (!fullscreenBtn) return;
-    const active = Boolean(fullscreenElement());
+    const active = Boolean(fullscreenElement()) || document.body.classList.contains("immersive-mode");
     fullscreenBtn.classList.toggle("is-active", active);
     fullscreenBtn.setAttribute("aria-label", active ? "退出全屏" : "进入全屏");
     if (fullscreenText) fullscreenText.textContent = active ? "退出全屏" : "全屏";
@@ -1317,10 +1331,15 @@
   async function toggleFullscreen() {
     if (!fullscreenBtn) return;
     try {
+      if (document.body.classList.contains("immersive-mode") && !fullscreenElement()) {
+        setImmersiveMode(false);
+        return;
+      }
       if (fullscreenElement()) {
         if (document.exitFullscreen) await document.exitFullscreen();
         else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
         else if (document.msExitFullscreen) document.msExitFullscreen();
+        setImmersiveMode(false);
       } else if (document.documentElement.requestFullscreen) {
         await document.documentElement.requestFullscreen({ navigationUI: "hide" });
       } else if (document.documentElement.webkitRequestFullscreen) {
@@ -1328,10 +1347,13 @@
       } else if (document.documentElement.msRequestFullscreen) {
         document.documentElement.msRequestFullscreen();
       } else {
-        say("当前浏览器不支持全屏");
+        setImmersiveMode(true);
+        say(isIOSDevice() && !isStandaloneApp() ? "iPhone浏览器只能沉浸显示，添加到主屏幕后更像全屏" : "已进入沉浸显示");
       }
+      if (screen.orientation?.lock && fullscreenElement()) screen.orientation.lock("landscape").catch(() => {});
     } catch (err) {
-      say("点一下页面后再试全屏");
+      setImmersiveMode(true);
+      say(isIOSDevice() ? "iPhone浏览器限制网页真全屏，已改用沉浸显示" : "点一下页面后再试全屏");
     }
     updateFullscreenLabel();
     setTimeout(resize, 120);
@@ -5119,6 +5141,19 @@
     resetJoystick();
   }
 
+  function bindInstantAction(el, handler) {
+    if (!el) return;
+    const run = (e) => {
+      if (el.disabled) return;
+      if (e.cancelable) e.preventDefault();
+      e.stopPropagation();
+      handler();
+    };
+    el.addEventListener("pointerdown", run, { passive: false });
+    el.addEventListener("touchstart", run, { passive: false });
+    el.addEventListener("click", run, { passive: false });
+  }
+
   addEventListener("keydown", (e) => {
     keys.add(e.code);
     if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Space"].includes(e.code)) e.preventDefault();
@@ -5149,8 +5184,8 @@
     if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
   });
   canvas.addEventListener("pointercancel", () => { S.pointer.active = false; });
-  ultBtn.addEventListener("click", useUltimate);
-  if (dodgeBtn) dodgeBtn.addEventListener("click", dodge);
+  bindInstantAction(ultBtn, useUltimate);
+  bindInstantAction(dodgeBtn, dodge);
   if (fullscreenBtn) fullscreenBtn.addEventListener("click", toggleFullscreen);
   if (pauseBtn) pauseBtn.addEventListener("click", pause);
   if (restartBtn) restartBtn.addEventListener("click", start);

@@ -36,6 +36,14 @@ body {
   user-select: none;
 }
 
+body.immersive-mode {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+}
+
 canvas {
   position: fixed;
   inset: 0;
@@ -295,6 +303,7 @@ canvas {
   box-shadow:
     0 0 0 10px rgba(255, 178, 63, 0.08),
     0 18px 50px rgba(255, 65, 95, 0.38);
+  touch-action: none;
 }
 
 .ultimate-btn strong {
@@ -338,6 +347,7 @@ canvas {
   box-shadow:
     0 0 0 8px rgba(114, 240, 206, 0.08),
     0 16px 42px rgba(38, 183, 137, 0.28);
+  touch-action: none;
 }
 
 .dodge-btn strong {
@@ -415,6 +425,7 @@ canvas {
   backdrop-filter: blur(14px);
   font-size: 13px;
   letter-spacing: 0.08em;
+  touch-action: manipulation;
 }
 
 .fullscreen-btn.is-active {
@@ -448,6 +459,7 @@ canvas {
   backdrop-filter: blur(14px);
   font-size: 12px;
   letter-spacing: 0.08em;
+  touch-action: manipulation;
 }
 
 .quick-btn.restart {
@@ -1137,60 +1149,143 @@ button:hover {
 
   .overlay {
     padding: 12px;
+    overflow: hidden;
   }
 
   .modal {
-    max-height: calc(100vh - 24px);
-    max-height: calc(100svh - 24px);
-    padding: 18px;
-    border-radius: 24px;
-  }
-
-  .modal h2 {
-    font-size: clamp(30px, 7vw, 52px);
-  }
-
-  .modal p {
-    margin-top: 9px;
-    line-height: 1.55;
-  }
-
-  .role-preview {
-    grid-template-columns: 82px 1fr;
-    gap: 12px;
-    margin-top: 14px;
-    padding: 10px;
-  }
-
-  .avatar-frame {
-    width: 82px;
-    height: 82px;
-    border-radius: 22px;
-  }
-
-  .avatar-frame::before {
-    inset: 6px;
+    width: min(860px, calc(100vw - 16px));
+    max-height: calc(100vh - 12px);
+    max-height: calc(100svh - 12px);
+    max-height: calc(100dvh - 12px);
+    overflow: hidden;
+    padding: 10px 14px;
     border-radius: 18px;
   }
 
-  .avatar-frame img {
-    width: 68px;
-    height: 68px;
+  .eyebrow {
+    margin-bottom: 3px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+  }
+
+  .modal h2 {
+    font-size: clamp(22px, 4.8vw, 34px);
+    letter-spacing: 0.08em;
+  }
+
+  .modal p {
+    margin-top: 5px;
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  .role-preview {
+    grid-template-columns: 64px 1fr;
+    gap: 9px;
+    margin-top: 8px;
+    padding: 8px;
     border-radius: 16px;
+  }
+
+  .avatar-frame {
+    width: 64px;
+    height: 64px;
+    border-radius: 17px;
+  }
+
+  .avatar-frame::before {
+    inset: 5px;
+    border-radius: 14px;
+  }
+
+  .avatar-frame img {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+  }
+
+  .preview-copy strong {
+    font-size: 18px;
+  }
+
+  .preview-copy span {
+    font-size: 11px;
+  }
+
+  .preview-copy p {
+    margin-top: 4px;
+    font-size: 10px;
+    line-height: 1.32;
   }
 
   .modal-actions {
-    margin-top: 16px;
+    margin-top: 9px;
+    gap: 8px;
+  }
+
+  .modal-actions button,
+  .refresh-upgrades {
+    padding: 9px 16px;
+    font-size: 12px;
   }
 
   .upgrade-choices {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
-    margin-top: 14px;
+    margin-top: 8px;
   }
 
   .upgrade-card {
-    min-height: 112px;
-    padding: 12px;
-    border-radius: 16px;
+    min-height: 86px;
+    padding: 9px;
+    border-radius: 14px;
+  }
+
+  .upgrade-card b {
+    font-size: 13px;
+  }
+
+  .upgrade-card span {
+    display: -webkit-box;
+    margin-top: 5px;
+    overflow: hidden;
+    font-size: 10px;
+    line-height: 1.28;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+  }
+
+  .refresh-upgrades {
+    margin-top: 8px;
+  }
+
+  body[data-mode="upgrade"] #overlayText {
+    display: none;
+  }
+
+  body[data-mode="gameover"] .modal {
+    text-align: left;
+  }
+
+  body[data-mode="gameover"] .modal h2,
+  body[data-mode="gameover"] .eyebrow,
+  body[data-mode="gameover"] #overlayText,
+  body[data-mode="gameover"] .modal-actions {
+    text-align: center;
+  }
+
+  body[data-mode="gameover"] #overlayText {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  body[data-mode="gameover"] .preview-copy p {
+    display: -webkit-box;
+    max-height: none;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 6;
   }
 }
