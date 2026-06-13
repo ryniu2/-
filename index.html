@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>韭菜成长史</title>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -65,8 +65,40 @@
     <strong>大招</strong>
     <span id="ultText">准备</span>
   </button>
+  <button class="dodge-btn" id="dodgeBtn" type="button">
+    <strong>闪避</strong>
+    <span id="dodgeText">准备</span>
+  </button>
+  <div class="joystick" id="joystick" aria-label="移动摇杆">
+    <div class="joystick-base">
+      <div class="joystick-stick" id="joystickStick"></div>
+    </div>
+  </div>
+  <button class="fullscreen-btn" id="fullscreenBtn" type="button" aria-label="进入全屏">
+    <span class="fullscreen-icon">⛶</span>
+    <span id="fullscreenText">全屏</span>
+  </button>
+  <div class="quick-controls" aria-label="手机快捷操作">
+    <button class="quick-btn" id="pauseBtn" type="button">
+      <span id="pauseText">暂停</span>
+    </button>
+    <button class="quick-btn restart" id="restartBtn" type="button">
+      <span id="restartText">重开</span>
+    </button>
+    <button class="quick-btn ui-toggle" id="uiToggleBtn" type="button">
+      <span id="uiToggleText">隐藏UI</span>
+    </button>
+  </div>
 
-  <div class="help">WASD / 方向键移动，手机按住屏幕拖动。技能自动攻击；每 2 级技能三选一；金币刷新技能树。空格/右下按钮放大招。P 暂停，R 重开。</div>
+  <section class="rotate-prompt" id="rotatePrompt" aria-live="polite">
+    <div class="rotate-card">
+      <div class="phone-tilt">↻</div>
+      <strong>请横屏游玩</strong>
+      <p>手机端横屏视野更大，点击“全屏”后旋转手机，走位和技能选择会更舒服。</p>
+    </div>
+  </section>
+
+  <div class="help">WASD / 方向键移动，手机用左下摇杆。技能自动攻击；每 2 级技能三选一；金币刷新技能树。空格/右下按钮放大招，Shift/闪避按钮冲刺。P 暂停，R 重开。</div>
   <div class="toast" id="toast">升级！</div>
 
   <section class="overlay" id="overlay">
