@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>韭菜成长史</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <canvas id="game" aria-label="韭菜成长史游戏画布"></canvas>
+  <div class="vignette"></div>
+
+  <aside class="hud">
+    <div class="brand">
+      <h1>韭菜成长史</h1>
+      <span class="pill" id="statusPill">准备入市</span>
+    </div>
+
+    <div class="role-chip">
+      <img id="hudAvatar" alt="当前角色头像">
+      <div>
+        <strong id="hudRoleName">随机散户</strong>
+        <span id="hudRoleClass">等待抽签</span>
+      </div>
+    </div>
+
+    <div class="bar hp" title="本金 / 血量"><span id="hpFill"></span></div>
+    <div class="bar xp" title="经验"><span id="xpFill"></span></div>
+
+    <div class="stats">
+      <div class="stat"><b id="levelText">1</b><small>等级</small></div>
+      <div class="stat"><b id="stageText">1</b><small>关卡</small></div>
+      <div class="stat"><b id="xpText">0/6</b><small>经验</small></div>
+      <div class="stat"><b id="goldText">0</b><small>金币</small></div>
+      <div class="stat"><b id="killText">0</b><small>击杀</small></div>
+    </div>
+  </aside>
+
+  <aside class="skills">
+    <h2>技能盘</h2>
+    <div class="skill-card">
+      <div class="skill-icon" id="roleSkillIcon">韭</div>
+      <div>
+        <strong id="roleSkillTitle">角色技能</strong>
+        <span id="roleSkillInfo">每名散户都有不同的自动攻击。</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon sword">剑</div>
+      <div>
+        <strong id="swordTitle">技能树：元素分支</strong>
+        <span id="swordInfo">每 2 级选择元素分支，金币可刷新三选一。</span>
+      </div>
+    </div>
+    <div class="skill-card boss-card">
+      <div class="skill-icon boss">镰</div>
+      <div>
+        <strong id="bossTitle">第 1 关 Boss</strong>
+        <span id="bossInfo">升到 10 级触发 Boss 战。</span>
+      </div>
+    </div>
+  </aside>
+
+  <button class="ultimate-btn" id="ultBtn" type="button">
+    <strong>大招</strong>
+    <span id="ultText">准备</span>
+  </button>
+
+  <div class="help">WASD / 方向键移动，手机按住屏幕拖动。技能自动攻击；每 2 级技能三选一；金币刷新技能树。空格/右下按钮放大招。P 暂停，R 重开。</div>
+  <div class="toast" id="toast">升级！</div>
+
+  <section class="overlay" id="overlay">
+    <div class="modal">
+      <p class="eyebrow" id="overlayKicker">散户修炼 · 技能树割镰</p>
+      <h2 id="overlayTitle">韭菜成长史</h2>
+      <p id="overlayText">随机抽取一名散户角色，靠走位和自动技能刷怪升级。第 10 级挑战第一关 Boss，之后每 10 级推进一关，最终成长为股市大牛。</p>
+
+      <div class="role-preview" id="rolePreview">
+        <div class="avatar-frame">
+          <img id="previewAvatar" alt="随机角色头像">
+        </div>
+        <div class="preview-copy">
+          <strong id="previewName">抽签中</strong>
+          <span id="previewClass">散户身份</span>
+          <p id="previewSkill">技能说明</p>
+        </div>
+      </div>
+
+      <div class="upgrade-choices" id="upgradeChoices"></div>
+      <button class="refresh-upgrades" id="refreshSkillsBtn" type="button">刷新技能树</button>
+
+      <div class="modal-actions">
+        <button id="startBtn">开始游戏</button>
+        <button class="ghost" id="rerollBtn">重抽角色</button>
+        <button class="ghost" id="howBtn">玩法提示</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="game.js"></script>
+</body>
+</html>
